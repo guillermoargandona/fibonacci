@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "worker"
+    },
+    {
+      "path": "server"
+    },
+    {
+      "path": "client"
+    }
+  ],
+  "settings": {}
+}
