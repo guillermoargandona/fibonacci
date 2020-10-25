@@ -1,0 +1,22 @@
+language: generic
+services:
+  - docker
+
+before_install:
+  - docker build -t guillermoargandona/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true guillermoargandona/react-test npm test
+
+after_success:
+  - docker build -t guillermoargandona/multi-client ./client
+  - docker build -t guillermoargandona/multi-nginx ./nginx
+  - docker build -t guillermoargandona/multi-server ./server
+  - docker build -t guillermoargandona/multi-worker ./worker
+  # Log into the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push guillermoargandona/multi-client
+  - docker push guillermoargandona/multi-nginx
+  - docker push guillermoargandona/multi-server
+  - docker push guillermoargandona/multi-worker
